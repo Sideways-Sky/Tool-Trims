@@ -1,0 +1,11 @@
+name: Tool-Trims
+version: '${version}'
+main: net.sideways_sky.tooltrims.Tool_Trims
+api-version: '1.20'
+commands:
+  givetooltrimitems:
+    description: Gives player all Tool Trim Templates
+    usage: /givetooltrimitems
+    permission: tool-trims.givetrims
+softdepend:
+  - Geyser
