@@ -19,11 +19,6 @@ public enum ToolTrimMaterial {
     public final TextColor color;
     public  final Material material;
 
-    public String getDisplayName(){
-        String lower = this.name().toLowerCase();
-        return lower.substring(0, 1).toUpperCase() + lower.substring(1);
-    }
-
     private ToolTrimMaterial(TextColor color, Material material) {
         this.color = color;
         this.material = material;

@@ -1,25 +1,25 @@
 package net.sideways_sky.tooltrims;
 
-import net.sideways_sky.tooltrims.commands.GiveToolTrimItems;
-import net.sideways_sky.tooltrims.events.SmithingEvents;
+import net.sideways_sky.tooltrims.geyser.GeyserHook;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.inventory.*;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 
 public final class Tool_Trims extends JavaPlugin {
-
-
     public static Tool_Trims Instance;
-
     public static void ConsoleSend(String message){
         Bukkit.getConsoleSender().sendMessage("[Tool Trims]: " + message);
     }
 
     @Override
     public void onEnable() {
-
         Instance = this;
 
         List<String> tool_materials = List.of("NETHERITE", "DIAMOND", "GOLDEN", "IRON", "STONE", "WOODEN");
@@ -45,7 +45,51 @@ public final class Tool_Trims extends JavaPlugin {
             }
         }
 
-        getServer().getPluginManager().registerEvents(new SmithingEvents(), this);
-        getCommand("givetooltrimitems").setExecutor(new GiveToolTrimItems());
+        for (ToolTrimSmithingTemplate trim: ToolTrimSmithingTemplate.values()) {
+            ShapedRecipe recipe = new ShapedRecipe(
+                    new NamespacedKey(Tool_Trims.Instance, trim.name() + "_duplication_recipe"),
+                    trim.item.asQuantity(2));
+            recipe.shape(
+                    "DTD",
+                    "DMD",
+                    "DDD");
+            recipe.setIngredient('T', trim.item);
+            recipe.setIngredient('M', trim.dupeMaterial);
+            recipe.setIngredient('D', Material.DIAMOND);
+
+            Bukkit.addRecipe(recipe);
+        }
+
+        saveDataPack();
+
+        try {
+            new GeyserHook();
+            ConsoleSend("Geyser found - hooked");
+        } catch (ClassNotFoundException exception) {
+            ConsoleSend("Geyser not found - disabling hook");
+        }
+
+        getServer().getPluginManager().registerEvents(new Events(), this);
+    }
+
+    public static boolean justInstalledDataPack = false;
+    public void saveDataPack(){
+        File file = new File(getServer().getWorldContainer().toPath().resolve("world"+File.separator+"datapacks").toString(),"Tool-Trims(with plugin).zip");
+        if(!file.exists()){
+
+            InputStream in = getResource("Tool-Trims(with plugin).zip");
+            if(in == null){
+                getLogger().severe("Missing resource: Datapack");
+                return;
+            }
+
+            try {
+                Files.copy(in, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                justInstalledDataPack = true;
+            } catch (IOException e) {
+                getLogger().severe("Unable to install datapack. Please manually install (grab from plugin folder)");
+                saveResource("Tool-Trims(with plugin).zip", true);
+            }
+        }
     }
 }

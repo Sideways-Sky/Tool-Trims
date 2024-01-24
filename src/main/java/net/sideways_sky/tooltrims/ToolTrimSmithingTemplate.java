@@ -4,25 +4,26 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.format.TextDecoration;
+import net.sideways_sky.tooltrims.geyser.GeyserEvents;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.geysermc.geyser.api.item.custom.CustomItemData;
+import org.geysermc.geyser.api.item.custom.CustomItemOptions;
 
 import java.util.List;
 
 public enum ToolTrimSmithingTemplate {
-    LINEAR(313001),
-    TRACKS(313002),
-    CHARGE(313003),
-    FROST(313004);
+    LINEAR(313001, Material.TERRACOTTA),
+    TRACKS(313002, Material.COBBLESTONE),
+    CHARGE(313003, Material.COBBLED_DEEPSLATE),
+    FROST(313004, Material.SNOW_BLOCK);
     public final ItemStack item;
-
-    public String getDisplayName(){
-        String lower = this.name().toLowerCase();
-        return lower.substring(0, 1).toUpperCase() + lower.substring(1);
-    }
-
-    ToolTrimSmithingTemplate(int modelData) {
+    public final Material dupeMaterial;
+    private final int ModelData;
+    ToolTrimSmithingTemplate(int modelData, Material dupeMaterial) {
+        this.dupeMaterial = dupeMaterial;
+        ModelData = modelData;
         ItemStack x = new ItemStack(Material.STRUCTURE_BLOCK);
         ItemMeta xMeta = x.getItemMeta();
         xMeta.setCustomModelData(modelData);
@@ -37,5 +38,15 @@ public enum ToolTrimSmithingTemplate {
         ));
         x.setItemMeta(xMeta);
         this.item = x;
+
+    }
+
+    public GeyserEvents.CustomGeyserItem geyserItem(){
+        return new GeyserEvents.CustomGeyserItem(
+                CustomItemData.builder().customItemOptions(
+                        CustomItemOptions.builder().customModelData(ModelData).build()
+                ).name(this.name().toLowerCase() + "_tool_trim_smithing_template").allowOffhand(true).build(),
+                "minecraft:structure_block"
+        );
     }
 }
