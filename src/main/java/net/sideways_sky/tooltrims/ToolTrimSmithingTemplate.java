@@ -38,7 +38,6 @@ public enum ToolTrimSmithingTemplate {
         ));
         x.setItemMeta(xMeta);
         this.item = x;
-
     }
 
     public GeyserEvents.CustomGeyserItem geyserItem(){
