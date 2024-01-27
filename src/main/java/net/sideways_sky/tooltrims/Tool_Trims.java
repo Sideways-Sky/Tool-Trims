@@ -25,18 +25,25 @@ public final class Tool_Trims extends JavaPlugin {
         List<String> tool_materials = List.of("NETHERITE", "DIAMOND", "GOLDEN", "IRON", "STONE", "WOODEN");
         List<String> tools = List.of("SWORD", "PICKAXE", "AXE", "SHOVEL", "HOE");
 
-        for (String tool: tools) {
-            for (String tool_material: tool_materials) {
-                int model_data = 311000;
-                for (ToolTrimSmithingTemplate trim: ToolTrimSmithingTemplate.values()) {
-                    for (ToolTrimMaterial trim_material: ToolTrimMaterial.values()) {
-                        model_data++;
-                        Material base = Material.getMaterial(tool_material + "_" + tool);
+
+        int model_data = 311000;
+        for (ToolTrimSmithingTemplate trim: ToolTrimSmithingTemplate.values()) {
+            for (ToolTrimMaterial trim_material: ToolTrimMaterial.values()) {
+
+                model_data++;
+                String trimName = (trim.name() + "_" + trim_material.name()).toLowerCase();
+                Events.ItemCompatibility.modalDataToTrimName.put(model_data, trimName);
+
+                for (String tool: tools) {
+                    for (String tool_material: tool_materials) {
+
+                        String materialBaseName = tool_material + "_" + tool;
+                        Material base = Material.getMaterial(materialBaseName);
                         if(base == null){
-                            ConsoleSend("Unknown Material Base: " + tool_material + "_" + tool);
+                            ConsoleSend("Unknown Material Base: " + materialBaseName);
                             continue;
                         }
-                        String key = (tool_material + "_" + tool + "_" + trim.name() + "_" + trim_material.name()).toLowerCase();
+                        String key = (materialBaseName + "_" + trimName).toLowerCase();
                         new ToolTrim(
                                 key, base, trim_material, trim, model_data
                         );

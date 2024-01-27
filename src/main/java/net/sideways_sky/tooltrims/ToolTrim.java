@@ -26,12 +26,11 @@ public class ToolTrim {
     private final ToolTrimSmithingTemplate TrimTemplate;
     private final int ModelData;
     private static final NamespacedKey ItemPDCKey = new NamespacedKey(Tool_Trims.Instance, "tool_trim");
-    private final String Key;
+    public final String Key;
     private final Material Base;
     public static Map<String, ToolTrim> Trims = new HashMap<>();
     public static boolean hasTrim(ItemStack item){
-        ItemMeta x = item.getItemMeta();
-        return x.getPersistentDataContainer().has(ItemPDCKey);
+        return item.getItemMeta().getPersistentDataContainer().has(ItemPDCKey);
     }
 
     public static ToolTrim getTrim(ItemStack item){
