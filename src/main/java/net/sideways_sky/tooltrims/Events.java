@@ -1,14 +1,13 @@
 package net.sideways_sky.tooltrims;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.inventory.PrepareSmithingEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.event.player.PlayerHarvestBlockEvent;
-import org.bukkit.event.player.PlayerPickupArrowEvent;
 import org.bukkit.event.server.ServerLoadEvent;
 import org.bukkit.event.world.LootGenerateEvent;
 import org.bukkit.inventory.ItemStack;
@@ -30,15 +29,16 @@ public class Events implements Listener {
                 e.getInventory().getInputMineral() == null
         )
         {return;}
+
         ItemStack item = e.getResult();
 
         if(ToolTrim.hasTrim(e.getInventory().getInputEquipment())){
-            e.setResult(ItemStack.empty());
+            item = ToolTrim.getTrim(item).UndoTransform(item);
         } else if(ToolTrim.hasTrim(item)){
             return;
         }
 
-        for (ToolTrim trim : ToolTrim.Trims) {
+        for (ToolTrim trim : ToolTrim.Trims.values()) {
             if(trim.IsMyRecipe(e.getInventory())){
                 e.setResult(trim.Transform(item));
                 return;
@@ -75,10 +75,10 @@ public class Events implements Listener {
         List<ItemStack> loot = e.getLoot();
         loot.replaceAll(Events::updateItem);
     }
-
     private static ItemStack updateItem(ItemStack in){
-        if(in == null){return null;}
-        if(!in.getItemMeta().hasCustomModelData()){return in;}
+        if(
+                in == null || in.getType() != Material.STRUCTURE_BLOCK || !in.getItemMeta().hasCustomModelData()
+        ){return in;}
         switch (in.getItemMeta().getCustomModelData()){
             case 313001 -> {
                 return ToolTrimSmithingTemplate.LINEAR.item.asQuantity(in.getAmount());

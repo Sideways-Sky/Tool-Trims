@@ -26,7 +26,7 @@ public class GeyserEvents implements EventRegistrar {
             CustomGeyserItem item = template.geyserItem();
             e.register(item.javaBaseItemId, item.itemData);
         }
-        for (ToolTrim trim : ToolTrim.Trims){
+        for (ToolTrim trim : ToolTrim.Trims.values()){
             CustomGeyserItem item = trim.geyserItem();
             e.register(item.javaBaseItemId, item.itemData);
         }

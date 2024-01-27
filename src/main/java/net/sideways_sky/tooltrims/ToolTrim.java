@@ -16,10 +16,9 @@ import org.bukkit.persistence.PersistentDataType;
 import org.geysermc.geyser.api.item.custom.CustomItemData;
 import org.geysermc.geyser.api.item.custom.CustomItemOptions;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-
-import static net.sideways_sky.tooltrims.Tool_Trims.ConsoleSend;
+import java.util.Map;
 
 public class ToolTrim {
     private final SmithingTransformRecipe Recipe;
@@ -29,20 +28,17 @@ public class ToolTrim {
     private static final NamespacedKey ItemPDCKey = new NamespacedKey(Tool_Trims.Instance, "tool_trim");
     private final String Key;
     private final Material Base;
-    public static List<ToolTrim> Trims = new ArrayList<>();
+    public static Map<String, ToolTrim> Trims = new HashMap<>();
     public static boolean hasTrim(ItemStack item){
         ItemMeta x = item.getItemMeta();
         return x.getPersistentDataContainer().has(ItemPDCKey);
     }
 
-//    public static ToolTrim getTrim(ItemStack item){
-//        ItemMeta itemMeta = item.getItemMeta();
-//        String Key = itemMeta.getPersistentDataContainer().get(ItemPDCKey, PersistentDataType.STRING);
-//        for (ToolTrim trim : Trims) {
-//            if(trim.IsMyKey(Key)){return trim;}
-//        }
-//        return null;
-//    }
+    public static ToolTrim getTrim(ItemStack item){
+        ItemMeta itemMeta = item.getItemMeta();
+        String Key = itemMeta.getPersistentDataContainer().get(ItemPDCKey, PersistentDataType.STRING);
+        return Trims.get(Key);
+    }
 
     public ToolTrim(String UKey, Material base, ToolTrimMaterial trimMaterial, ToolTrimSmithingTemplate trimTemplate, int modelData) {
         Recipe = new SmithingTransformRecipe(
@@ -57,7 +53,7 @@ public class ToolTrim {
         Base = base;
         Key = UKey;
         Bukkit.addRecipe(Recipe);
-        Trims.add(this);
+        Trims.put(UKey, this);
     }
     public GeyserEvents.CustomGeyserItem geyserItem(){
         return new GeyserEvents.CustomGeyserItem(
@@ -82,10 +78,6 @@ public class ToolTrim {
                 Recipe.getBase().test(inventory.getInputEquipment());
     }
 
-//    public boolean IsMyKey(String testKey){
-//        return Key.equalsIgnoreCase(testKey);
-//    }
-
     private List<? extends net.kyori.adventure.text.Component> getLore(){
         return List.of(
                 Component.translatable("item.tooltrims.smithing_template.upgrade", Style.style(NamedTextColor.GRAY).decoration(TextDecoration.ITALIC, false)),
@@ -109,16 +101,16 @@ public class ToolTrim {
         return item;
     }
 
-//    public ItemStack UndoTransform(ItemStack item){
-//        ItemMeta itemMeta = item.getItemMeta();
-//        if(itemMeta.hasLore()){
-//            List<Component> lore = itemMeta.lore();
-//            lore.removeAll(getLore());
-//            itemMeta.lore(lore);
-//        }
-//        itemMeta.setCustomModelData(null);
-//        itemMeta.getPersistentDataContainer().remove(ItemPDCKey);
-//        item.setItemMeta(itemMeta);
-//        return item;
-//    }
+    public ItemStack UndoTransform(ItemStack item){
+        ItemMeta itemMeta = item.getItemMeta();
+        if(itemMeta.hasLore()){
+            List<Component> lore = itemMeta.lore();
+            lore.removeAll(getLore());
+            itemMeta.lore(lore);
+        }
+        itemMeta.setCustomModelData(null);
+        itemMeta.getPersistentDataContainer().remove(ItemPDCKey);
+        item.setItemMeta(itemMeta);
+        return item;
+    }
 }
