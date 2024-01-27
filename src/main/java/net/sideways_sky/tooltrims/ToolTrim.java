@@ -43,7 +43,7 @@ public class ToolTrim {
         Recipe = new SmithingTransformRecipe(
                 new NamespacedKey(Tool_Trims.Instance, UKey + "_recipe"),
                 new ItemStack(base),
-                new RecipeChoice.ExactChoice(trimTemplate.item),
+                new RecipeChoice.MaterialChoice(trimTemplate.item.getType()),
                 new RecipeChoice.MaterialChoice(base),
                 new RecipeChoice.MaterialChoice(trimMaterial.material));
         TrimMaterial = trimMaterial;
@@ -73,6 +73,7 @@ public class ToolTrim {
         {return false;}
         return inventory.getRecipe().getResult().equals(Recipe.getResult()) &&
                 Recipe.getTemplate().test(inventory.getInputTemplate()) &&
+                inventory.getInputTemplate().getItemMeta().getCustomModelData() == TrimTemplate.item.getItemMeta().getCustomModelData() &&
                 Recipe.getAddition().test(inventory.getInputMineral()) &&
                 Recipe.getBase().test(inventory.getInputEquipment());
     }

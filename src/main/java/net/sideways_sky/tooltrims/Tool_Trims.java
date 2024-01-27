@@ -17,7 +17,6 @@ public final class Tool_Trims extends JavaPlugin {
     public static void ConsoleSend(String message){
         Bukkit.getConsoleSender().sendMessage("[Tool Trims]: " + message);
     }
-
     @Override
     public void onEnable() {
         Instance = this;
@@ -78,8 +77,6 @@ public final class Tool_Trims extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new Events(), this);
     }
-
-    public static boolean justInstalledDataPack = false;
     public void saveDataPack(){
         File file = new File(getServer().getWorldContainer().toPath().resolve("world"+File.separator+"datapacks").toString(),"Tool-Trims(with plugin).zip");
         if(!file.exists()){
@@ -92,7 +89,6 @@ public final class Tool_Trims extends JavaPlugin {
 
             try {
                 Files.copy(in, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
-                justInstalledDataPack = true;
             } catch (IOException e) {
                 getLogger().severe("Unable to install datapack. Please manually install (grab from plugin folder)");
                 saveResource("Tool-Trims(with plugin).zip", true);
