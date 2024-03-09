@@ -73,7 +73,7 @@ public class ToolTrim {
         {return false;}
         return inventory.getRecipe().getResult().equals(Recipe.getResult()) &&
                 Recipe.getTemplate().test(inventory.getInputTemplate()) &&
-                inventory.getInputTemplate().getItemMeta().getCustomModelData() == TrimTemplate.item.getItemMeta().getCustomModelData() &&
+                TrimTemplate.isMyTemplate(inventory.getInputTemplate().getItemMeta()) &&
                 Recipe.getAddition().test(inventory.getInputMineral()) &&
                 Recipe.getBase().test(inventory.getInputEquipment());
     }

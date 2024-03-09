@@ -3,8 +3,10 @@ package net.sideways_sky.tooltrims;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.event.inventory.PrepareSmithingEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Recipe;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,8 +20,8 @@ public class Events implements Listener {
                 e.getInventory().getInputTemplate() == null ||
                 e.getInventory().getInputEquipment() == null ||
                 e.getInventory().getInputMineral() == null ||
-                        e.getInventory().getInputTemplate().getType() != Material.STRUCTURE_BLOCK ||
-                        !e.getInventory().getInputTemplate().getItemMeta().hasCustomModelData()
+                e.getInventory().getInputTemplate().getType() != Material.STRUCTURE_BLOCK ||
+                !e.getInventory().getInputTemplate().getItemMeta().hasCustomModelData()
         )
         {return;}
 
@@ -38,6 +40,30 @@ public class Events implements Listener {
         for (ToolTrim trim : ToolTrim.Trims.values()) {
             if(trim.IsMyRecipe(e.getInventory())){
                 e.setResult(trim.Transform(item));
+                return;
+            }
+        }
+    }
+    @EventHandler
+    public static void onPrepareItemCraft(PrepareItemCraftEvent e){
+        Recipe recipe = e.getRecipe();
+        if(
+                recipe == null ||
+                e.getInventory().getResult() == null ||
+                recipe.getResult().getType() != Material.STRUCTURE_BLOCK ||
+                !recipe.getResult().getItemMeta().hasCustomModelData()
+        ){return;}
+
+        for (ToolTrimSmithingTemplate template : ToolTrimSmithingTemplate.values()){
+            if(template.isMyTemplate(recipe.getResult().getItemMeta())){
+                ItemStack inputTemplate = e.getInventory().getMatrix()[1];
+                if(
+                        inputTemplate == null ||
+                        !inputTemplate.hasItemMeta() ||
+                        !template.isMyTemplate(inputTemplate.getItemMeta())
+                ){
+                    e.getInventory().setResult(ItemStack.empty());
+                }
                 return;
             }
         }

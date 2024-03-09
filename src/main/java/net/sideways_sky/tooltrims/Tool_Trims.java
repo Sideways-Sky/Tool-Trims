@@ -3,8 +3,6 @@ package net.sideways_sky.tooltrims;
 import net.sideways_sky.tooltrims.geyser.GeyserHook;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
-import org.bukkit.inventory.*;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.*;
@@ -52,18 +50,7 @@ public final class Tool_Trims extends JavaPlugin {
         }
 
         for (ToolTrimSmithingTemplate trim: ToolTrimSmithingTemplate.values()) {
-            ShapedRecipe recipe = new ShapedRecipe(
-                    new NamespacedKey(Tool_Trims.Instance, trim.name() + "_duplication_recipe"),
-                    trim.item.asQuantity(2));
-            recipe.shape(
-                    "DTD",
-                    "DMD",
-                    "DDD");
-            recipe.setIngredient('T', trim.item);
-            recipe.setIngredient('M', trim.dupeMaterial);
-            recipe.setIngredient('D', Material.DIAMOND);
-
-            Bukkit.addRecipe(recipe);
+            Bukkit.addRecipe(trim.dupeRecipe);
         }
 
         saveDataPack();

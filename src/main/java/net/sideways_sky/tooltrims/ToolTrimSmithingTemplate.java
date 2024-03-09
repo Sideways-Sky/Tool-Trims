@@ -6,7 +6,10 @@ import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.sideways_sky.tooltrims.geyser.GeyserEvents;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Recipe;
+import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.geysermc.geyser.api.item.custom.CustomItemData;
 import org.geysermc.geyser.api.item.custom.CustomItemOptions;
@@ -19,10 +22,9 @@ public enum ToolTrimSmithingTemplate {
     CHARGE(313003, Material.COBBLED_DEEPSLATE),
     FROST(313004, Material.SNOW_BLOCK);
     public final ItemStack item;
-    public final Material dupeMaterial;
+    public final ShapedRecipe dupeRecipe;
     private final int ModelData;
     ToolTrimSmithingTemplate(int modelData, Material dupeMaterial) {
-        this.dupeMaterial = dupeMaterial;
         ModelData = modelData;
         ItemStack x = new ItemStack(Material.STRUCTURE_BLOCK);
         ItemMeta xMeta = x.getItemMeta();
@@ -38,6 +40,19 @@ public enum ToolTrimSmithingTemplate {
         ));
         x.setItemMeta(xMeta);
         this.item = x;
+        dupeRecipe = new ShapedRecipe(
+                new NamespacedKey(Tool_Trims.Instance, this.name().toLowerCase() + "_duplication_recipe"),
+                item.asQuantity(2));
+        dupeRecipe.shape(
+                "DTD",
+                "DMD",
+                "DDD");
+        dupeRecipe.setIngredient('T', Material.STRUCTURE_BLOCK);
+        dupeRecipe.setIngredient('M', dupeMaterial);
+        dupeRecipe.setIngredient('D', Material.DIAMOND);
+    }
+    public boolean isMyTemplate(ItemMeta meta){
+        return meta.hasCustomModelData() && meta.getCustomModelData() == ModelData;
     }
 
     public GeyserEvents.CustomGeyserItem geyserItem(){
