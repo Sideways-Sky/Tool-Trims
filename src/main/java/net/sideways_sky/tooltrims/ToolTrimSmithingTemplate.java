@@ -4,15 +4,11 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.format.TextDecoration;
-import net.sideways_sky.tooltrims.geyser.GeyserEvents;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.geysermc.geyser.api.item.custom.CustomItemData;
-import org.geysermc.geyser.api.item.custom.CustomItemOptions;
 
 import java.util.List;
 
@@ -53,14 +49,5 @@ public enum ToolTrimSmithingTemplate {
     }
     public boolean isMyTemplate(ItemMeta meta){
         return meta.hasCustomModelData() && meta.getCustomModelData() == ModelData;
-    }
-
-    public GeyserEvents.CustomGeyserItem geyserItem(){
-        return new GeyserEvents.CustomGeyserItem(
-                CustomItemData.builder().customItemOptions(
-                        CustomItemOptions.builder().customModelData(ModelData).build()
-                ).name(this.name().toLowerCase() + "_tool_trim_smithing_template").allowOffhand(true).build(),
-                "minecraft:structure_block"
-        );
     }
 }

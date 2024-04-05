@@ -3,7 +3,6 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.Style;
 import net.kyori.adventure.text.format.TextDecoration;
-import net.sideways_sky.tooltrims.geyser.GeyserEvents;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -13,8 +12,6 @@ import org.bukkit.inventory.SmithingInventory;
 import org.bukkit.inventory.SmithingTransformRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
-import org.geysermc.geyser.api.item.custom.CustomItemData;
-import org.geysermc.geyser.api.item.custom.CustomItemOptions;
 
 import java.util.HashMap;
 import java.util.List;
@@ -43,7 +40,7 @@ public class ToolTrim {
         Recipe = new SmithingTransformRecipe(
                 new NamespacedKey(Tool_Trims.Instance, UKey + "_recipe"),
                 new ItemStack(base),
-                new RecipeChoice.MaterialChoice(trimTemplate.item.getType()),
+                new RecipeChoice.MaterialChoice(Material.STRUCTURE_BLOCK),
                 new RecipeChoice.MaterialChoice(base),
                 new RecipeChoice.MaterialChoice(trimMaterial.material));
         TrimMaterial = trimMaterial;
@@ -53,14 +50,6 @@ public class ToolTrim {
         Key = UKey;
         Bukkit.addRecipe(Recipe);
         Trims.put(UKey, this);
-    }
-    public GeyserEvents.CustomGeyserItem geyserItem(){
-        return new GeyserEvents.CustomGeyserItem(
-                CustomItemData.builder().customItemOptions(
-                        CustomItemOptions.builder().customModelData(ModelData).build()
-                ).name(Key).displayName(Base.translationKey()).allowOffhand(true).build(),
-                Base.getKey().asString()
-        );
     }
 
     public boolean IsMyRecipe(SmithingInventory inventory){
