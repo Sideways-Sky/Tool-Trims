@@ -16,7 +16,6 @@ public class Events implements Listener {
     public static void onPrepareSmithing(PrepareSmithingEvent e){
         if(
                 e.getInventory().getRecipe() == null ||
-                e.getResult() == null ||
                 e.getInventory().getInputTemplate() == null ||
                 e.getInventory().getInputEquipment() == null ||
                 e.getInventory().getInputMineral() == null ||
@@ -25,16 +24,14 @@ public class Events implements Listener {
         )
         {return;}
 
-        ItemStack item = e.getResult();
-        ItemCompatibility.checkUpdateTool(e.getInventory().getInputEquipment());
+        ItemStack item = e.getInventory().getInputEquipment().clone();
+        ItemCompatibility.checkUpdateTool(item);
 
-        if(ToolTrim.hasTrim(e.getInventory().getInputEquipment())){
+        if(ToolTrim.hasTrim(item)){
             ToolTrim trim = ToolTrim.getTrim(item);
             if(trim != null){
                 item = trim.UndoTransform(item);
             }
-        } else if(ToolTrim.hasTrim(item)){
-            return;
         }
 
         for (ToolTrim trim : ToolTrim.Trims.values()) {
