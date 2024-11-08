@@ -54,7 +54,7 @@ public final class Tool_Trims extends JavaPlugin {
                 Material.NETHERITE_AXE,         Material.DIAMOND_AXE,       Material.GOLDEN_AXE,        Material.IRON_AXE,      Material.STONE_AXE,     Material.WOODEN_AXE,
                 Material.NETHERITE_SHOVEL,      Material.DIAMOND_SHOVEL,    Material.GOLDEN_SHOVEL,     Material.IRON_SHOVEL,   Material.STONE_SHOVEL,  Material.WOODEN_SHOVEL,
                 Material.NETHERITE_HOE,         Material.DIAMOND_HOE,       Material.GOLDEN_HOE,        Material.IRON_HOE,      Material.STONE_HOE,     Material.WOODEN_HOE,
-                Material.BOW, Material.CROSSBOW);
+                Material.BOW, Material.CROSSBOW, Material.MACE);
 
 
         int model_data = 311000;
