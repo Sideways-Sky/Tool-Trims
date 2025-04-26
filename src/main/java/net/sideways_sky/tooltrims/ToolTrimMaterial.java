@@ -14,6 +14,7 @@ public enum ToolTrimMaterial {
     NETHERITE(TextColor.color(98, 88, 89), Material.NETHERITE_INGOT),
     QUARTZ(TextColor.color(227, 212, 196), Material.QUARTZ),
     REDSTONE(TextColor.color(151, 22, 7), Material.REDSTONE);
+//    RESIN(TextColor.color(), Material.RESIN_BRICK);
 
 
     public final TextColor color;
