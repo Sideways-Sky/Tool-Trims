@@ -13,14 +13,15 @@ public final class Tool_Trims extends JavaPlugin {
     public static Tool_Trims Instance;
 
     private boolean justInstalledDataPack = false;
+    private final static String DataPackFilename = "Tool-Trims-DP(plugin-1.2.1).zip";
 
     @Override
     public void onLoad() {
         Instance = this;
-        File file = new File(getServer().getWorldContainer().toPath().resolve("world"+File.separator+"datapacks").toString(), "Tool-Trims-DP(plugin).zip");
+        File file = new File(getServer().getWorldContainer().toPath().resolve("world"+File.separator+"datapacks").toString(), DataPackFilename);
         if(!file.exists()){
 
-            InputStream in = getResource("Tool-Trims-DP(plugin).zip");
+            InputStream in = getResource(DataPackFilename);
             if(in == null){
                 getLogger().severe("Missing resource: Datapack");
                 getServer().getPluginManager().disablePlugin(this);
@@ -33,7 +34,7 @@ public final class Tool_Trims extends JavaPlugin {
                 justInstalledDataPack = true;
             } catch (IOException e) {
                 getLogger().severe("Unable to install datapack. Please manually install (grab from plugin folder)");
-                saveResource("Tool-Trims-DP(plugin).zip", true);
+                saveResource(DataPackFilename, true);
             }
         } else {
             getLogger().info("Datapack found. skipping installation");
@@ -54,7 +55,7 @@ public final class Tool_Trims extends JavaPlugin {
                 Material.NETHERITE_AXE,         Material.DIAMOND_AXE,       Material.GOLDEN_AXE,        Material.IRON_AXE,      Material.STONE_AXE,     Material.WOODEN_AXE,
                 Material.NETHERITE_SHOVEL,      Material.DIAMOND_SHOVEL,    Material.GOLDEN_SHOVEL,     Material.IRON_SHOVEL,   Material.STONE_SHOVEL,  Material.WOODEN_SHOVEL,
                 Material.NETHERITE_HOE,         Material.DIAMOND_HOE,       Material.GOLDEN_HOE,        Material.IRON_HOE,      Material.STONE_HOE,     Material.WOODEN_HOE,
-                Material.BOW, Material.CROSSBOW, Material.MACE);
+                Material.BOW, Material.CROSSBOW, Material.MACE, Material.TRIDENT);
 
 
         int model_data = 311000;

@@ -8,6 +8,7 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.*;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.trim.TrimPattern;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.util.HashMap;
@@ -37,7 +38,8 @@ public class ToolTrim {
                 new NamespacedKey(Tool_Trims.Instance, UKey + "_recipe"),
                 new RecipeChoice.MaterialChoice(Material.STRUCTURE_BLOCK),
                 new RecipeChoice.MaterialChoice(base),
-                new RecipeChoice.MaterialChoice(trimMaterial.material), true);
+                new RecipeChoice.MaterialChoice(trimMaterial.material),
+                TrimPattern.BOLT, true);
         TrimMaterial = trimMaterial;
         TrimTemplate = trimTemplate;
         ModelData = modelData;
